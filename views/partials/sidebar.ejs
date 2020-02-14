@@ -1,0 +1,36 @@
+<div class="col-sm-3 col-md-2 sidebar">
+    <div class="top-navigation">
+        <span style="display:none;" id="userID" data-id="<%= user._id %>"></span>
+        <div class="t-menu">MENU</div>
+        <div class="t-img">
+            <img src="/static/images/lines.png" alt="" />
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+    <div class="drop-navigation drop-navigation">
+        <ul class="nav nav-sidebar">
+            <li class="active"><a href="/index" class="home-icon"><span class="glyphicon glyphicon-home"
+                        aria-hidden="true"></span>Home</a></li>
+            <li><a href="/profile/<%= user.email %>" class="home-icon"><span class="glyphicon glyphicon-user"
+                        style="font-size:16px; margin-right:33px;" aria-hidden="true"></span>Profile</a></li>
+
+            <!-- <li><a href="/history" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-hourglass" aria-hidden="true"></span>History</a></li> -->
+            <li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>My
+                    loaction<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
+            <ul class="cl-effect-2">
+
+            </ul>
+            <!-- script-for-menu -->
+
+        </ul>
+        <!-- script-for-menu -->
+        <script>
+            $(".top-navigation").click(function () {
+                $(".drop-navigation").slideToggle(300, function () {
+                    // Animation complete.
+                });
+            });
+        </script>
+
+    </div>
+</div>

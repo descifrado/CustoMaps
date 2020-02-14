@@ -1,0 +1,452 @@
+<style>
+    .tags {
+        list-style: none;
+        margin: -11%;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .tags li {
+        float: left;
+    }
+
+    .tag {
+        background: #eee;
+        border-radius: 3px 0 0 3px;
+        color: #999;
+        display: inline-block;
+        height: 26px;
+        line-height: 26px;
+        padding: 0 20px 0 23px;
+        position: relative;
+        margin: 0 10px 10px 0;
+        text-decoration: none;
+        -webkit-transition: color 0.2s;
+    }
+
+    .tag::before {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+        content: '';
+        height: 6px;
+        left: 10px;
+        position: absolute;
+        width: 6px;
+        top: 10px;
+    }
+
+    .tag::after {
+        background: #fff;
+        border-bottom: 13px solid transparent;
+        border-left: 10px solid #eee;
+        border-top: 13px solid transparent;
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .tag:hover {
+        background-color: crimson;
+        color: white;
+    }
+
+    .tag:hover::after {
+        border-left-color: crimson;
+    }
+
+    .like-content {
+        display: inline-block;
+        width: 100%;
+        font-size: 18px;
+        border-top: 10px dashed #eee;
+
+        float: left;
+    }
+
+    .like-content span {
+        color: #9d9da4;
+        font-family: monospace;
+
+    }
+
+    .btn.btn-xs.btn-secondary.like-review {
+        float: right;
+        padding: 3px 11px;
+        margin: 7px;
+    }
+
+    .like-content .btn-secondary {
+        display: inline-block;
+
+
+        border-radius: 8px;
+        box-shadow: 0 10px 20px -8px;
+        font-size: 18px;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        color: #ffffff;
+        text-decoration: none;
+        -webkit-transition: 0.3s ease;
+        transition: 0.3s ease;
+    }
+
+    .like {
+        background: grey;
+        float: right;
+    }
+
+    .dislike {
+        background: grey;
+        float: right;
+    }
+
+
+
+    .animate-like {
+        animation-name: likeAnimation;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-duration: 0.65s;
+    }
+
+    @keyframes likeAnimation {
+        0% {
+            transform: scale(30);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .inline {
+        display: inline-block;
+
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('.extra-options-button>a').click(function (ele) {
+            $(this).parent().next().toggle(100);
+        });
+    });
+</script>
+
+<div class="">
+    <div class="row">
+        <div class="col-sm-10" style="padding : 19px 32px;">
+            <div class="title" style="padding : 8px; margin-right: 195px;">
+                <h2><strong><%= video.title %> </strong></h2>
+                <div class="extra-options-button" style="display: inline-block; font-size:3em;  top:1.5em; left: 27em;">
+                    <a class="fa fa-ellipsis-v"></a></div>
+                <div class="extra-options-container" style="top:6em ;left:84em ;width: 147px;">
+                    <div class="options">
+                        <span class="fa fa-clock-o"></span> <span>Watch Later</span>
+                    </div>
+                    <div class="options" onclick="addThisToPlaylist(this)" data-videoid="<%= video._id %>">
+                        <span class="fa fa-server"></span><span> Add to Playlist</span>
+                    </div>
+                    <a href="/video/import/<%= video._id %>" style="text-decoration: none; color:black;">
+                        <div class="options">
+                            <span class="fa fa-clone"></span> Import </span>
+                        </div>
+                    </a>
+                    <div class="options" onclick="reportAbuse(this)" data-videoid="<%= video._id %>">
+                        <span class="fa fa-flag"></span> <span> Report</span>
+                    </div>
+                </div>
+            </div>
+            <% include addToPlaylistModal.ejs %>
+            <div class="row" style="padding : 8px;">
+                <div class="col-sm-10 col-md-10">
+                    <div class="like-content" style="border: 1px solid black;padding: 3px 3px;position: relative;">
+                        <div style="display: inline-float; padding: 7px ; float:left; color :grey;font-size: 14px">
+
+                            <i class="fa fa-eye" aria-hidden="true"></i> <%= video.views %> views | uploaded on
+                            <%= moment(video.uploadTime).format('MM-DD-YYYY') %>
+
+
+                        </div>
+
+                        <% if(iDisliked) { %>
+
+
+                        <button class="btn btn-xs btn-secondary dislike like-review" id="dislike"
+                            style="padding : 1px 7px 1px 7px">
+                            <i class="fa fa-thumbs-down" aria-hidden="true"></i> Dislike
+                        </button>
+                        <script>
+                            $("#dislike").css('background', 'red');
+                            $("#dislike").html('<%= dislikes %><i class="fa fa-thumbs-down" aria-hidden="true"></i> You disliked this')
+                        </script>
+                        <% } else {%>
+                        <button class="btn btn-xs btn-secondary dislike like-review" id="dislike"
+                            style="padding : 1px 7px 1px 7px">
+                            <i class="fa fa-thumbs-down" aria-hidden="true"></i><%= dislikes %> Dislike
+                        </button>
+                        <% } %>
+                        <% if(iLiked) { %>
+                        <button class="btn btn-xs btn-secondary like like-review" id="like"
+                            style="padding : 1px 7px 1px 7px">
+                            <i class="fa fa-thumbs-up " aria-hidden="true"></i> Like
+                        </button>
+                        <script>
+                            $("#like").css('background', 'green');
+                            $("#like").html('<%= likes %><i class="fa fa-thumbs-up" aria-hidden="true"></i> You liked this')
+                        </script>
+                        <% } else { %>
+                        <button class="btn btn-xs btn-secondary like like-review" id="like"
+                            style="padding : 1px 7px 1px 7px">
+                            <%= likes %><i class="fa fa-thumbs-up " aria-hidden="true"></i> Like
+                        </button>
+                        <% }%>
+
+                    </div>
+                    <div class="like-content" style="padding: 4px; border: 1px solid black;position: relative;">
+                        <div class="inline user">
+                            <a href="/profile/<%= video.uploader%>"><img src="/assets/profile.jpg"
+                                    style="border-radius : 50%;width : 50px;height : 50px" class="inline"></a>
+                            <a href="/profile/<%= video.uploader%>" style=" "><%= video.uploaderName %></a>
+                            <% if(video.uploader != user.email ) { %>
+                            <div style="position: absolute;right: 38px;top: 15px">
+                                <input type="hidden" id="subscribeMe" value="<%= video.uploader %>">
+                                <div class="subscribe-container "><a
+                                        class="subscribe-button <% if(isSubbed) { %> subbed <% } %>"
+                                        data-count="<%= subsCount %>">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <g>
+                                                <rect class="plus__line1" width="2" height="12" x="5" y="0"></rect>
+                                                <rect class="plus__line2" width="12" height="2" x="0" y="5"></rect>
+                                            </g>
+                                        </svg><span class="subscribe-text" style="color:#fff">Subscribe</span></a></div>
+
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <div class="like-content" style="padding: 11px; border: 1px solid black;position: relative;">
+                        <ul class="tags" style="margin:-4% ;display: inline">
+                            <% var i;var len=video.tags.length ; for(i=0 ; i < len ;i = i+1 ){%>
+                            <li style="display: inline"><a href="#" class="tag"><%= video.tags[i] %></a></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                    <div class="like-content" style="padding: 4px; border: 1px solid black;position: relative;">
+                        <div class="col-md-12" style="font-size: 15px;padding : 15px;color: #373232">
+                            <article>
+                                <%= video.description %>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="page-header" style="margin-top:13%">
+                <h3 class="reviews">Leave your comment</h3>
+            </div>
+            <div class="comment-tabs">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab">
+                            <h4 class="reviews text-capitalize">Comments</h4>
+                        </a></li>
+                    <li><a href="#add-comment" role="tab" data-toggle="tab">
+                            <h4 class="reviews text-capitalize">Add comment</h4>
+                        </a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="comments-logout">
+                        <ul class="media-list">
+                            <% comments.forEach(function(comment){ %>
+                            <li class="media" data-_id="<%= comment._id %>1" style="position: relative">
+                                <a class="pull-left" href="/user/<%= comment.userEmail%>">
+                                    <img class="media-object img-circle" src="/static/images/user.png" alt="profile">
+                                </a>
+                                <div class="media-body">
+                                    <div class="well well-lg">
+                                        <h4 class="media-heading text-uppercase reviews"><%= comment.commenterName %>
+                                        </h4>
+                                        <ul class="media-date text-uppercase reviews list-inline">
+                                            <%= moment(comment.uploadTime).format( 'MM-DD-YYYY') %>
+                                        </ul>
+                                        <p class="media-comment" id="<%= comment._id %>" data-_id="<%= comment._id %>">
+                                            <%= comment.content %>
+                                        </p>
+                                        <!-- <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span
+                                                    class="glyphicon glyphicon-share-alt"></span>
+                                                Reply</a>
+                                            <a class="btn btn-warning btn-circle text-uppercase" data-toggle="collapse"
+                                                href="#replyOne"><span class="glyphicon glyphicon-comment"></span> 2
+                                                comments</a> -->
+                                    </div>
+                                </div>
+                                <% if(userEmail == comment.userEmail) { %>
+                                <div class="" style="position: absolute; top :0px ;right:0px">
+                                    <a commentid="<%= comment._id %>" class="editCommentLink" style="color:#bebebe;"
+                                        href="#">Edit</a>
+                                    <span> | </span>
+                                    <a commentid="<%= comment._id %>" class="deleteCommentLink" style="color:#bebebe;"
+                                        href="#">Delete</a>
+                                </div>
+                                <% } %>
+                            </li>
+                            <% }) %>
+                            <p id="dummy"></p>
+                        </ul>
+                    </div>
+                    <div class="tab-pane" id="add-comment">
+                        <div class="form-horizontal" id="">
+                            <div class="form-group">
+                                <label for="email" class="col-sm-2 control-label">Comment</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="addComment" id="comment_video"
+                                        rows="5"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button class="btn btn-success btn-circle text-uppercase" type=""
+                                        id="add_comment"><span class="glyphicon glyphicon-send"></span> Submit
+                                        comment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Ur Content</h4>
+            </div>
+            <div class="modal-body">
+                <textarea style="width:100%" id="edittedComment">
+
+                  </textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                <button type="button" id="submitEditComment" class="btn btn-default">Submit</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="/static/js/mainscript.js"></script>
+<script src="/static/js/likeComment.js"></script>
+<script>
+    $("a.editCommentLink").click(function () {
+        var commentId = $(this).attr("commentId");
+        console.log(commentId);
+        $.post('/video/getComment', { commentId: commentId }, (result, status) => {
+            if (status != 'success') {
+                console.log(err);
+                alert(status);
+            } else {
+                //alert("hello");
+                $("#edittedComment").val(result);
+                $("#myModal").modal('show');
+                $('#submitEditComment').click(function () {
+                    content = $("#edittedComment").val();
+                    $.post('/video/editComment', { content: content, commentId: commentId }, (result, status) => {
+                        console.log(status);
+                    })
+                })
+            }
+        })
+    })
+    $("a.deleteCommentLink").click(function () {
+        if (confirm('Are you sure you want to delete this')) {
+            var commentId = $(this).attr("commentId");
+
+            $.post('/video/removeComment', { commentId: commentId }, (result, status) => {
+                if (result == '1') {
+                    alert('Successfully deleted your comment');
+                } else {
+                    alert("Cannot delete comment ");
+                }
+            })
+
+        }
+    })
+
+</script>
+<script>
+    var subButton = document.querySelector('.subscribe-button');
+    var subbedClass = 'subbed';
+
+    subButton.addEventListener('click', function (e) {
+        toggleSubbed();
+        e.preventDefault();
+
+    });
+
+    function addSubsAjax() {
+        let subsTo = $('#subscribeMe').val();
+        $.post("/subscribe/hsr/" + subsTo,
+            {
+                action: "add"
+            },
+            function (data, status) {
+                console.log(data + "::" + status);
+            }
+        );
+    }
+
+    function deleteSubsAjax() {
+        let subsTo = $('#subscribeMe').val();
+        $.post("/subscribe/hsr/" + subsTo,
+            {
+                action: "delete"
+            },
+            function (data, status) {
+                console.log(data + "::" + status);
+            }
+        );
+    }
+
+
+
+    function toggleSubbed() {
+        var text;
+        var count = subButton.dataset.count;
+        //console.log(count)
+
+        if (subButton.classList.contains(subbedClass)) {
+            subButton.classList.remove(subbedClass);
+            text = 'Subscribe';
+            count--;
+            console.log("add subs");
+            deleteSubsAjax();
+        } else {
+            subButton.classList.add(subbedClass);
+            text = 'Subscribed';
+            count++;
+            console.log("del subs");
+            addSubsAjax();
+        }
+
+        subButton.querySelector('.subscribe-text').innerHTML = text;
+        subButton.dataset.count = count;
+    }
+
+		// if ('alert' == '') {
+		// 	window.setInterval(toggleSubbed, 1000);
+		// }
+</script>

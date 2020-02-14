@@ -1,0 +1,109 @@
+<style>
+    * {
+        -webkit-border-radius: 1px !important;
+        -moz-border-radius: 1px !important;
+        border-radius: 1px !important;
+    }
+
+    #logo {
+        color: #666;
+        width: 100%;
+    }
+
+    #logo h1 {
+        font-size: 60px;
+        text-shadow: 1px 2px 3px #999;
+        font-family: Roboto, sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    #logo p {
+        padding-bottom: 20px;
+    }
+
+
+    #form-buscar>.form-group>.input-group>.form-control {
+        height: 40px;
+    }
+
+    #form-buscar>.form-group>.input-group>.input-group-btn>.btn {
+        height: 40px;
+        font-size: 16px;
+        font-weight: 300;
+
+
+    }
+
+    #form-buscar>.form-group>.input-group>.input-group-btn>.btn .glyphicon {
+        margin-right: 12px;
+    }
+
+
+    #form-buscar>.form-group>.input-group>.form-control {
+        font-size: 16px;
+        font-weight: 300;
+
+    }
+
+    #form-buscar>.form-group>.input-group>.form-control:focus {
+        border-color: rgb(1, 10, 15);
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 1px rgba(0, 109, 0, 0.8);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 1px rgba(0, 109, 0, 0.8);
+    }
+    .pac-container{
+        z-index: 999999999;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="container">
+    <div class="row search-wrapper">
+        <div class="col-xs-8 col-xs-offset-2 mobile-search">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="hidden" name="type" value="name" id="search_type" style="z-index:999999999">
+                    <span class="input-group-btn">
+
+                     <!-- <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search -->
+                     <i class="fa fa-map-pin" style="font-size:24px;color:red"></i>
+
+                        </span>
+                    <input type="text" class="form-control index-search " name="term" id="search_term"
+                        placeholder="From..." value="">
+                    <span class="input-group-btn">
+
+                        <!-- <button class="btn btn-danger" type="submit">
+                            <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+                        </button> -->
+                    </span>
+
+                </div>
+               <br> 
+                <div class="input-group">
+                    <input type="hidden" name="type" value="name" id="search_type">
+                    <span class="input-group-btn"></span>
+                    <input type="text" class="form-control index-search " name="term2" id="search_term2"
+                        placeholder="To..." value="">
+                    <span class="input-group-btn">
+
+                        <button class="btn btn-danger   " type="submit">
+                            <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function activateAutoComleteBar(){
+        var input = document.getElementById('search_term');
+        var input2 = document.getElementById('search_term2');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        var autocomplete2 = new google.maps.places.Autocomplete(input2);
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&libraries=places&callback=activateAutoComleteBar"
+async defer></script>

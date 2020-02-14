@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<% include partials/head1.ejs %>
+	<!-- This will include and link all the required js and css files -->
+	<!-- //fonts -->
+	<style>
+		#map {
+			height: 825px;
+			width: 100%;
+			z-index: 10;
+		}
+	</style>
+</head>
+
+<body>
+
+	<% include partials/navbar1.ejs %>
+	<% include partials/sidebar.ejs %>
+	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		<div id="right-panel"></div>
+		<div id="map"></div>
+
+	</div>
+	<script>
+		function initMap() {
+			var directionsRenderer = new google.maps.DirectionsRenderer({
+				polylineOptions: {
+					strokeColor: "red"
+				}
+			});
+			var directionsService = new google.maps.DirectionsService;
+			var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 7,
+				center: { lat: 41.85, lng: -87.65 }
+			});
+			directionsRenderer.setMap(map);
+			directionsService.route({
+				origin: 'allahabad',
+				destination: 'varanasi',
+				travelMode: 'DRIVING'
+			}, function (response, status) {
+				if (status === 'OK') {
+					directionsRenderer.setDirections(response);
+				} else {
+					window.alert('Directions request failed due to ' + status);
+				}
+			});
+		}	
+	</script>
+	<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&callback=initMap"></script>
+
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src="/static/js/mainscript.js"></script>
+	<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+</body>
+
+</html>
