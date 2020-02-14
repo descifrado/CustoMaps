@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="/static/css/subscribe.css" rel="stylesheet" type="text/css">
+    <% include partials/head1.ejs %>
+    <!-- This will include and link all the required js and css files -->
+    <title>
+        Profile
+    </title>
+</head>
+<style>
+    body {
+        font: 12px/1.5 'PT Sans', serif;
+        margin: 25px;
+    }
+
+    .tags {
+        list-style: none;
+        margin: -11%;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .tags li {
+        float: left;
+    }
+
+    .tag {
+        background: #eee;
+        border-radius: 3px 0 0 3px;
+        color: #999;
+        display: inline-block;
+        height: 26px;
+        line-height: 26px;
+        padding: 0 20px 0 23px;
+        position: relative;
+        margin: 0 10px 10px 0;
+        text-decoration: none;
+        -webkit-transition: color 0.2s;
+    }
+
+    .tag::before {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+        content: '';
+        height: 6px;
+        left: 10px;
+        position: absolute;
+        width: 6px;
+        top: 10px;
+    }
+
+    .tag::after {
+        background: #fff;
+        border-bottom: 13px solid transparent;
+        border-left: 10px solid #eee;
+        border-top: 13px solid transparent;
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .tag:hover {
+        background-color: crimson;
+        color: white;
+    }
+
+    .tag:hover::after {
+        border-left-color: crimson;
+    }
+
+    .container {
+        position: relative;
+        left: 0%;
+        transform: translate(0%, 0%);
+        margin-right: 0%;
+        margin-top: 5%;
+    }
+
+    .text {
+        width: 200px;
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .container1 {
+        position: relative;
+        min-width: 20rem;
+        /* Maximum width */
+        margin: 0 auto;
+        /* Center it */
+    }
+
+    .container1 .content {
+        position: absolute;
+        /* Position the background text */
+        bottom: 0;
+        /* At the bottom. Use top:0 to append it to the top */
+        background: rgb(0, 0, 0);
+        /* Fallback color */
+        background: rgba(0, 0, 0, 0.5);
+        /* Black background with 0.5 opacity */
+        color: #f1f1f1;
+        /* Grey text */
+        width: 100%;
+        /* Full width */
+        padding: 6px;
+        /* Some padding */
+    }
+
+    body {
+        background: #F1F3FA;
+    }
+
+    /* Profile container */
+    .profile {
+        margin: 20px 0;
+    }
+
+    /* Profile sidebar */
+    .profile-sidebar {
+        padding: 20px 0 10px 0;
+        background: #fff;
+    }
+
+    .profile-userpic img {
+        float: none;
+        margin: 0 auto;
+        width: 50%;
+        height: 50%;
+        -webkit-border-radius: 50% !important;
+        -moz-border-radius: 50% !important;
+        border-radius: 50% !important;
+    }
+
+    .profile-usertitle {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .profile-usertitle-name {
+        color: #5a7391;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
+
+    .profile-usertitle-job {
+        text-transform: uppercase;
+        color: #5b9bd1;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .profile-userbuttons {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .profile-userbuttons .btn {
+        text-transform: uppercase;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 6px 15px;
+        margin-right: 5px;
+    }
+
+    .profile-userbuttons .btn:last-child {
+        margin-right: 0px;
+    }
+
+    .profile-usermenu {
+        margin-top: 30px;
+    }
+
+    .profile-usermenu ul li {
+        border-bottom: 1px solid #f0f4f7;
+    }
+
+    .profile-usermenu ul li:last-child {
+        border-bottom: none;
+    }
+
+    .profile-usermenu ul li a {
+        color: #93a3b5;
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .profile-usermenu ul li a i {
+        margin-right: 8px;
+        font-size: 14px;
+    }
+
+    .profile-usermenu ul li a:hover {
+        background-color: #fafcfd;
+        color: #5b9bd1;
+    }
+
+    .profile-usermenu ul li.active {
+        border-bottom: none;
+    }
+
+    .profile-usermenu ul li.active a {
+        color: #5b9bd1;
+        background-color: #f6f9fb;
+        border-left: 2px solid #5b9bd1;
+        margin-left: -2px;
+    }
+
+    /* Profile Content */
+    .profile-content {
+        padding: 20px;
+        background: #fff;
+        min-height: 460px;
+    }
+
+    .arrow-right {
+        width: 0;
+        height: 0;
+        border-top: 60px solid transparent;
+        border-bottom: 60px solid transparent;
+
+        border-left: 120px solid rgba(50, 0, 0, .6)
+    }
+</style>
+
+<body>
+
+    <% include partials/navbar1.ejs %>
+    <% include partials/sidebar.ejs %>
+
+    <div class="container">
+        <div class="row profile">
+            <div class="col-md-3">
+                <div class="profile-sidebar" style="display:relative;">
+                    <!-- SIDEBAR USERPIC -->
+                    <div class="profile-userpic">
+                        <img src="/assets/profile.jpg" class="img-responsive" alt="">
+                    </div>
+                    <!-- END SIDEBAR USERPIC -->
+                    <!-- SIDEBAR USER TITLE -->
+                    <div class="profile-usertitle">
+                        <div class="profile-usertitle-name">
+                            User Profile
+                        </div>
+                        <div class="profile-usertitle-job">
+                            <% if(!userProfile){ %>
+                            This account has been deleted
+                            <% } else { %>
+                            <%= userProfile.name %>
+                            <% } %>
+                        </div>
+                    </div>
+                    <% if(userProfile._id != user._id ){ %> 
+                    <input type="hidden" id="subscribeMe" value="<%= userProfile.email %>">
+                    <div class="subscribe-container"><a class="subscribe-button <% if(isSubbed) { %> subbed <% } %>" data-count="<%= subsCount %>">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <g>
+                                    <rect class="plus__line1" width="2" height="12" x="5" y="0"></rect>
+                                    <rect class="plus__line2" width="12" height="2" x="0" y="5"></rect>
+                                </g>
+                            </svg><span class="subscribe-text">Subscribe</span></a></div>
+                    <% } %>
+                    <div class="profile-usermenu">
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="profile-content">
+                    <div class="row">
+                        <%include partials/myVideos.ejs %>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <%include partials/myPlaylists.ejs %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <% include partials/footer.ejs %>
+</body>
+<script>
+    var subButton = document.querySelector('.subscribe-button');
+    var subbedClass = 'subbed';
+
+    subButton.addEventListener('click', function(e) {
+        toggleSubbed();
+        e.preventDefault();
+
+    });
+
+    function addSubsAjax(){
+        let subsTo = $('#subscribeMe').val();
+        $.post("/subscribe/hsr/"+subsTo ,
+            {
+                action : "add"
+            },
+            function(data,status){
+                console.log(data+"::"+status);
+            }
+        );
+    }
+
+    function deleteSubsAjax(){
+        let subsTo = $('#subscribeMe').val();
+        $.post("/subscribe/hsr/"+subsTo ,
+            {
+                action : "delete"
+            },
+            function(data,status){
+                console.log(data+"::"+status);
+            }
+        );
+    }
+
+    function toggleSubbed() {
+        var text;
+        var count = subButton.dataset.count;
+        //console.log(count)
+            
+        if (subButton.classList.contains(subbedClass)) {
+            subButton.classList.remove(subbedClass);
+            text = 'Subscribe';
+            count--;
+            deleteSubsAjax();
+        } else {
+            subButton.classList.add(subbedClass);
+            text = 'Subscribed';
+            count++;
+            addSubsAjax();
+        }
+        
+        subButton.querySelector('.subscribe-text').innerHTML = text;
+        subButton.dataset.count = count;
+    }
+
+    if ('alert' == '') {
+        window.setInterval(toggleSubbed, 1000);
+    }
+</script>
+</html>
