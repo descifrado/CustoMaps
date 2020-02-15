@@ -1,0 +1,451 @@
+<!DOCTYPE HTML>
+<html>
+<style>
+    .pac-container {
+        z-index: 999999999;
+    }
+</style>
+
+<head>
+    <% include partials/head1.ejs %>
+    <!-- This will include and link all the required js and css files -->
+    <!-- //fonts -->
+    <style>
+        #map {
+            height: 825px;
+            width: 100%;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background: rgb(3, 3, 32)">
+
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+
+
+
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="static/index.html">
+                    <h1><img src="/static/images/logo.png" alt="" /></h1>
+                </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse inline" style="position: relative">
+                <div class="header-top-left" style="position: absolute;top:-17px;left:265px;width: 300px;">
+                    <div class="input-group" style="padding: 5px;width: 627px;">
+                        <input type="hidden" name="type" value="name" id="search_type">
+
+                        <input type="text" class="form-control index-search " name="term" id="search_term"
+                            placeholder="From..." value="">
+                    </div>
+
+                    <div class="input-group" style="width: 627px;">
+                        <input type="hidden" name="type" value="name" id="search_type">
+                        <span class="input-group-btn"></span>
+                        <input type="text" class="form-control index-search " name="term2" id="search_term2"
+                            placeholder="To..." value="">
+                        <span class="input-group-btn">
+
+                            <button class="btn btn-danger" onclick="fun()" type="submit">
+                                <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="header-top-right" style="position: absolute;top:3px;right:3px">
+
+                    <div class="signin">
+                        <a href="#small-dialog2" class="play-icon popup-with-zoom-anim">Sign Up</a>
+                        <!-- pop-up-box -->
+                        <script type="text/javascript" src="/static/js/modernizr.custom.min.js"></script>
+                        <link href="/static/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
+                        <script src="/static/js/jquery.magnific-popup.js" type="text/javascript"></script>
+                        <!--//pop-up-box -->
+                        <script>
+                            fun2 = () => {
+                                email = $("#email").val()
+                                console.log(email);
+                                $.post('/user/signup/checkEmailAvl', { email: email }, (data, status) => {
+                                    if (data == 1) {
+                                        $("#message").html('<strong>Check ur email</strong>')
+                                    } else if (data == 0) {
+                                        $('#message').html('<strong>This email is already taken</strong>');
+                                    } else {
+                                        $("#message").html('<strong>Invalid email</strong>')
+                                    }
+                                })
+                            }
+                        </script>
+
+                        <div id="small-dialog2" class="mfp-hide">
+                            <h3>Create Account</h3>
+                            <div class="social-sits">
+
+                                <div class="chrome-button">
+                                    <a href="/user/login/google">Connect with Google</a>
+                                </div>
+                                <div class="button-bottom">
+                                    <p>Already have an account? <a href="#small-dialog"
+                                            class="play-icon popup-with-zoom-anim">Login</a></p>
+                                </div>
+                            </div>
+                            <div class="signup">
+                                <form class="well form-horizontal" id="upload_form">
+                                    <fieldset>
+
+                                        <!-- Form Name -->
+                                        <legend><strong>Enter your Email</strong></legend>
+
+                                        <!-- Text input-->
+
+                                        <div class="form-group">
+                                            <label class="col-md-12 " control-label">Email</label>
+                                            <div class="col-md-12 inputGroupContainer">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i
+                                                            class="glyphicon glyphicon-user"></i></span>
+                                                    <input name="email" placeholder="Email.." id="email"
+                                                        class="form-control" type="email">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Success message -->
+                                        <div class="alert alert-success" role="alert" id="message">
+                                        </div>
+
+                                        <!-- Button -->
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label"></label>
+                                            <div class="col-md-4">
+                                                <button id="verifyEmailSubmit" onclick="fun2()" type="button"
+                                                    class="btn btn-warning">
+                                                    <span class=" glyphicon glyphicon-send">
+                                                        Continue</span></button>
+                                            </div>
+                                        </div>
+
+                                </form>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+
+                        <script>
+                            fun = () => {
+                                email = $("#forgotEmail").val()
+                                console.log(email);
+                                $.post('/forgot/emailVerification', { email: email }, (data, status) => {
+                                    if (data.code == 1) {
+                                        $("#forgotMessage").html('<strong>Check ur email</strong>')
+                                    } else if (data.code == -1) {
+                                        $('#forgotMessage').html(data.message);
+                                    } else {
+                                        $("#forgotMessage").html('<strong>Internal Server error </strong>' + data.message)
+                                    }
+                                })
+                            }
+                        </script>
+
+                        <div id="small-dialog3" class="mfp-hide">
+                            <h3>Forgot Password</h3>
+                            <div class="social-sits">
+
+                                <div class="chrome-button">
+                                    <a href="#">Connect with Google</a>
+                                </div>
+                                <div class="button-bottom">
+                                    <p>Already have an account? <a href="#small-dialog"
+                                            class="play-icon popup-with-zoom-anim">Login</a></p>
+                                </div>
+                            </div>
+                            <div class="signup">
+                                <form class="well form-horizontal" id="upload_form">
+                                    <fieldset>
+
+                                        <!-- Form Name -->
+                                        <legend><strong>Enter your Email</strong></legend>
+
+                                        <!-- Text input-->
+
+                                        <div class="form-group">
+                                            <label class="col-md-12 " control-label">Email</label>
+                                            <div class="col-md-12 inputGroupContainer">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i
+                                                            class="glyphicon glyphicon-user"></i></span>
+                                                    <input name="email" placeholder="Email.." id="forgotEmail"
+                                                        class="form-control" type="email">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Success message -->
+                                        <div class="alert alert-success" role="alert" id="forgotMessage">
+                                        </div>
+
+                                        <!-- Button -->
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label"></label>
+                                            <div class="col-md-4">
+                                                <button id="forgotEmailSubmit" onclick="fun()" type="button"
+                                                    class="btn btn-warning">
+                                                    <span class=" glyphicon glyphicon-send">
+                                                        Continue</span></button>
+                                            </div>
+                                        </div>
+
+                                </form>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div id="small-dialog4" class="mfp-hide">
+                            <h3>Forgot Password</h3>
+                            <div class="social-sits">
+
+                                <div class="chrome-button">
+                                    <a href="#">Connect with Google</a>
+                                </div>
+                                <div class="button-bottom">
+                                    <p>Already have an account? <a href="#small-dialog"
+                                            class="play-icon popup-with-zoom-anim">Login</a></p>
+                                </div>
+                            </div>
+                            <div class="signup">
+                                <form>
+                                    <input type="text" class="email" placeholder="Email" required="required"
+                                        pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?" title="Enter a valid email" />
+                                    <input type="password" placeholder="Password" required="required" pattern=".{6,}"
+                                        title="Minimum 6 characters required" autocomplete="off" />
+                                    <input type="text" class="email" placeholder="Mobile Number" maxlength="10"
+                                        pattern="[1-9]{1}\d{9}" title="Enter a valid mobile number" />
+                                    <input type="submit" value="Sign Up" />
+                                </form>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div id="small-dialog7" class="mfp-hide">
+                            <h3>Create Account</h3>
+                            <div class="social-sits">
+
+                                <div class="chrome-button">
+                                    <a href="#">Connect with Google</a>
+                                </div>
+                                <div class="button-bottom">
+                                    <p>Already have an account? <a href="#small-dialog"
+                                            class="play-icon popup-with-zoom-anim">Login</a></p>
+                                </div>
+                            </div>
+                            <div class="signup">
+                                <form action="upload.html">
+                                    <input type="text" class="email" placeholder="Email" required="required"
+                                        pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?" title="Enter a valid email" />
+                                    <input type="password" placeholder="Password" required="required" pattern=".{6,}"
+                                        title="Minimum 6 characters required" autocomplete="off" />
+                                    <input type="submit" value="Sign In" />
+                                </form>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+
+
+
+                        <script>
+                            $(document).ready(function () {
+                                $('.popup-with-zoom-anim').magnificPopup({
+                                    type: 'inline',
+                                    fixedContentPos: false,
+                                    fixedBgPos: true,
+                                    overflowY: 'auto',
+                                    closeBtnInside: true,
+                                    preloader: false,
+                                    midClick: true,
+                                    removalDelay: 300,
+                                    mainClass: 'my-mfp-zoom-in'
+                                });
+
+                            });
+                        </script>
+                    </div>
+                    <div class="signin">
+
+
+                        <a href="#small-dialog" class="play-icon popup-with-zoom-anim">Sign In</a>
+
+                        <div id="small-dialog" class="mfp-hide">
+                            <h3>Login</h3>
+                            <div class="social-sits">
+
+                                <div class="chrome-button">
+                                    <a href="#">Connect with Google</a>
+                                </div>
+                                <div class="button-bottom">
+                                    <p>New account? <a href="#small-dialog2"
+                                            class="play-icon popup-with-zoom-anim">Signup</a></p>
+                                </div>
+                            </div>
+                            <div class="signup">
+                                <form action="/user/login" method="POST">
+                                    <input type="text" class="email" placeholder="Enter email / mobile"
+                                        required="required" name="email" pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?"
+                                        title="Please enter valid email" />
+                                    <input type="password" name="password" autocomplete="off" required="required"
+                                        id="password" placeholder="password"
+                                        title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                                    <input type="submit" value="LOGIN" />
+                                    <!-- pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" -->
+                                </form>
+                                <div class="forgot">
+                                    <a href="#small-dialog3" class="play-icon popup-with-zoom-anim">Forgot password
+                                        ?</a>
+                                </div>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </nav>
+
+    <% include partials/sidebar1.ejs %>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <!-- <div>
+			<h1 style="z-index:9999999999">
+				<%= coord %>
+			</h1>
+		</div> -->
+        <div id="right-panel"></div>
+        <div id="map"></div>
+
+    </div>
+
+    <script>
+
+        function initMap() {
+
+            var origin_back = <%= coord %>;
+            if (origin_back) {
+                var uluru = { lat: 25.495996, lng: 81.868219 };
+                var map = new google.maps.Map(
+                    document.getElementById('map'), { zoom: 15, center: uluru });
+                var marker = new google.maps.Marker({ position: uluru, map: map });
+            }
+            else {
+
+                var directionsService = new google.maps.DirectionsService;
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 7,
+                    center: { lat: 41.85, lng: -87.65 }
+                });
+                console.log("<%= src %>");
+                console.log("<%= dest %>");
+                directionsService.route({
+                    origin: "<%= src %>",
+                    destination: "<%= dest %>",
+                    travelMode: 'WALKING',
+                    provideRouteAlternatives: true
+                }, function (result, status) {
+                    console.log(<%= result1 %>);
+                    var arr = [];
+					
+					<% result1.forEach(element => { %>
+                        arr.push(<%= element %>)
+                        <% }); %>
+					var max = -10000000, idx = -1;
+                    for (i = 0; i < arr.length; i++) {
+                        if (arr[i] > max) {
+                            max = arr[i];
+                            idx = i;
+                        }
+                    }
+                    console.log(result.routes.length);
+                    for (var i = 0; i < result.routes.length; i++) {
+                        //	if (i != idx) {
+                        var directionsRenderer = new google.maps.DirectionsRenderer({
+                            polylineOptions: {
+                                strokeColor: "red"
+                            }
+                        });
+                        //	}
+                        directionsRenderer.setMap(map);
+                        directionsRenderer.setRouteIndex(i);
+                        directionsRenderer.setDirections(result);
+                    }
+                    if (idx != -1) {
+                        let safety = '<%= safety %>';
+                        var directionsRenderer;
+                        if (safety == 'true') {
+                            directionsRenderer = new google.maps.DirectionsRenderer({
+                                polylineOptions: {
+                                    strokeColor: "blue"
+                                }
+                            });
+                        }else{
+                            directionsRenderer = new google.maps.DirectionsRenderer({
+                                polylineOptions: {
+                                    strokeColor: "green"
+                                }
+                            });
+                        }
+
+                        directionsRenderer.setMap(map);
+                        directionsRenderer.setRouteIndex(idx);
+                        directionsRenderer.setDirections(result);
+                    }
+                });
+
+
+            }
+        }
+
+        function activateAutoComleteBar() {
+            var input = document.getElementById('search_term');
+            var input2 = document.getElementById('search_term2');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            var autocomplete2 = new google.maps.places.Autocomplete(input2);
+        }
+
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&libraries=places&callback=initialize"
+        async defer></script>
+    <script>
+        function initialize() {
+            initMap();
+            activateAutoComleteBar();
+        }
+    </script>
+
+    <!-- <script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&callback=initMap"></script> -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script>
+        function fun() {
+            var src = document.getElementById('search_term').value;
+            var dest = document.getElementById('search_term2').value;
+            var safety = $('#safety').is(":checked");
+            var entertainment = $('#entertainment').is(":checked");
+            window.location.replace('http://localhost:3000/search_action1?src=' + src + '&dest=' + dest + '&entertainment=' + entertainment + '&safety=' + safety);
+        }
+
+    </script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="/static/js/mainscript.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+</body>
+
+</html>

@@ -197,6 +197,25 @@ myMap.set("night_club", -40);
 myMap.set("police", 150);
 myMap.set("post_office", 70);
 
+
+let myMap1=new Map();
+myMap1.set("amusement_park", 100);
+myMap1.set("art_gallery", 50);
+myMap1.set("bakery", 60);
+myMap1.set("cafe", 40);
+myMap1.set("casino", 50);
+myMap1.set("meal_delivery", 30);
+myMap1.set("meal_takeaway", 30);
+myMap1.set("movie_theater", 80);
+myMap1.set("museum", 70);
+myMap1.set("restaurant", 90);
+myMap1.set("zoo", 80);
+myMap1.set("park", 40);
+myMap1.set("tourist_attraction", 60);
+myMap1.set("night_club", 40);
+myMap1.set("movie_rental", 40);
+myMap1.set("lodging", 80);
+
 // Assuming a 2D Array routePointsType to be given by Backend API team
 routePointsType = new Array(3);
 routePointsType[0] = new Array("bank", "gym", "food");
@@ -238,10 +257,21 @@ router.get('/', async (req, res, next) => {
         console.log(req.query);
         let src = req.query.src;
         let dest = req.query.dest;
+        let safety = req.params.safety;
+        let entertainment = req.params.entertainment;
+        
         if(!src || !dest || src.length <3 || dest.length < 3){
              res.redirect('/index');
         }
         // res.send(req.query);
+        let finMap;
+        
+        if(!entertainment){
+            finMap = myMap;
+        }else{
+            finMap = myMap1; 
+        }
+
         let arr = getAllPlaces(src, dest);
         arr
             .then((allPlaces) => {
@@ -251,9 +281,9 @@ router.get('/', async (req, res, next) => {
                     let routePointsType = allPlaces[j];
                     let score = 0;
                     for (var i = 0; i < routePointsType.length; i++) {
-                        if (myMap.has(routePointsType[i])) {
-                            console.log(routePointsType[i] + " " + myMap.get(routePointsType[i]));
-                            score += myMap.get(routePointsType[i])
+                        if (finMap.has(routePointsType[i])) {
+                            console.log(routePointsType[i] + " " + finMap.get(routePointsType[i]));
+                            score += finMap.get(routePointsType[i])
                         }
                     }
                     result.push(score);

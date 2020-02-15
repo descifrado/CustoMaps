@@ -8,7 +8,7 @@ var https = require('https')
 function getPoints(src, des) {
     return new Promise((resolve, reject) => {
         request({
-            'url': 'https://maps.googleapis.com/maps/api/directions/json?origin=' + src + '&destination=' + des + '&key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&alternatives=true',
+            'url': 'https://maps.googleapis.com/maps/api/directions/json?origin=' + src + '&destination=' + des + '&key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&alternatives=true&travelMode=WALKING',
             'method': "GET",
             'proxy': 'http://edcguest:edcguest@172.31.100.14:3128'
         }, function (error, response, body) {
@@ -197,6 +197,24 @@ myMap.set("night_club", -40);
 myMap.set("police", 150);
 myMap.set("post_office", 70);
 
+let myMap1=new Map();
+myMap1.set("amusement_park", 100);
+myMap1.set("art_gallery", 50);
+myMap1.set("bakery", 60);
+myMap1.set("cafe", 40);
+myMap1.set("casino", 50);
+myMap1.set("meal_delivery", 30);
+myMap1.set("meal_takeaway", 30);
+myMap1.set("movie_theater", 80);
+myMap1.set("museum", 70);
+myMap1.set("restaurant", 90);
+myMap1.set("zoo", 80);
+myMap1.set("park", 40);
+myMap1.set("tourist_attraction", 60);
+myMap1.set("night_club", 40);
+myMap1.set("movie_rental", 40);
+myMap1.set("lodging", 80);
+
 // Assuming a 2D Array routePointsType to be given by Backend API team
 routePointsType = new Array(3);
 routePointsType[0] = new Array("bank", "gym", "food");
@@ -238,8 +256,18 @@ router.get('/', async (req, res, next) => {
         console.log(req.query);
         let src = req.query.src;
         let dest = req.query.dest;
+        let safety = req.query.safety;
+        let entertainment = req.query.entertainment;
         if(!src || !dest || src.length <3 || dest.length < 3){
              res.redirect('/index');
+        }
+        let finMap;
+        if(entertainment != 'true'){
+            finMap = myMap;
+            safety = 'true';
+        }else{
+            finMap = myMap1;
+            safety = 'false';
         }
         // res.send(req.query);
         let arr = getAllPlaces(src, dest);
@@ -251,16 +279,16 @@ router.get('/', async (req, res, next) => {
                     let routePointsType = allPlaces[j];
                     let score = 0;
                     for (var i = 0; i < routePointsType.length; i++) {
-                        if (myMap.has(routePointsType[i])) {
-                            console.log(routePointsType[i] + " " + myMap.get(routePointsType[i]));
-                            score += myMap.get(routePointsType[i])
+                        if (finMap.has(routePointsType[i])) {
+                            console.log(routePointsType[i] + " " + finMap.get(routePointsType[i]));
+                            score += finMap.get(routePointsType[i])
                         }
                     }
                     result.push(score);
                 }
                 console.log(result)
                 // res.render('home3.ejs',{ user: req.user, coord : true ,result1 : [],src : '25.491899,81.865059', dest : '25.491899,81.865059'});
-                res.render('home3.ejs',{ user: null, coord : false ,result1 : result,src : src, dest : dest});
+                res.render('home3.ejs',{ user: null, coord : false ,result1 : result,src : src, dest : dest,safety : safety});
             })
             .catch((err) =>{
                 console.log(err);

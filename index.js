@@ -50,6 +50,7 @@ require('express-async-errors');
 require('./startup/routes')(app);
 
 
+
 // to handle uncaught Exceptions
 process.on('uncaughtException',(ex)=>{
     console.log("There was some uncaught exception" + ex);

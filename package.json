@@ -37,6 +37,7 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "request": "^2.88.2",
+    "spherical-geometry-js": "^2.0.0",
     "winston": "^3.2.1"
   }
 }

@@ -9,7 +9,8 @@ router.get('/', async (req, res, next) => {
         // if (req.user) {
         //     res.render('home3.ejs', { user: req.user});
         // } else {
-            res.render('home3.ejs',{ user: req.user, coord : true ,result1 : [],src : '25.491899,81.865059', dest : '25.491899,81.865059'});
+            
+            res.render('home3.ejs',{ user: req.user, coord : true ,result1 : [],src : '25.491899,81.865059', dest : '25.491899,81.865059',safety : 'false'});
         //}   
         // res.render('play.ejs',{user : null,videos : null})
         //res.send(");

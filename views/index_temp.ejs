@@ -68,8 +68,10 @@
 							idx = i;
 						}
 					}
+					console.log(result.routes);
 					for (var i = 0; i < result.routes.length; i++) {
 						//	if (i != idx) {
+						console.log(i);
 						var directionsRenderer = new google.maps.DirectionsRenderer({
 							polylineOptions: {
 								strokeColor: "red"
@@ -80,12 +82,22 @@
 						directionsRenderer.setRouteIndex(i);
 						directionsRenderer.setDirections(result);
 					}
+					var safety = '<%= safety %>';
 					if (idx != -1) {
-						var directionsRenderer = new google.maps.DirectionsRenderer({
-							polylineOptions: {
-								strokeColor: "blue"
-							}
-						});
+						var directionsRenderer;
+						if (safety) {
+							directionsRenderer = new google.maps.DirectionsRenderer({
+								polylineOptions: {
+									strokeColor: "blue"
+								}
+							});
+						} else {
+							directionsRenderer = new google.maps.DirectionsRenderer({
+								polylineOptions: {
+									strokeColor: "green"
+								}
+							});
+						}
 						directionsRenderer.setMap(map);
 						directionsRenderer.setRouteIndex(idx);
 						directionsRenderer.setDirections(result);
