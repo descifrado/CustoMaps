@@ -37,6 +37,7 @@
         </form>
         <script src="/static/js/search.js"></script>
       </div>
+      <!-- SEARCH ABOVE -->
       <div class="col-md-3 col-md-offset-1" style="padding: 8px;">
         <div class="col-md-2 col-md-offset-2">
           
@@ -57,7 +58,8 @@
           </ul>
           <div class="noti-footer">Mark all as read</div>
         </div>
-        <div class="col-md-2 col-md-offset-1">
+        <!-- PROFILE BELOW -->
+        <div class="col-md-1 col-md-offset-1">
           <div style="display:inline-block;">
             <button id="profile-button" class="btn btn-primary">Profile</button>
           </div>
@@ -81,7 +83,114 @@
           </div>
         </div>
 
+
+        <!-- REPORT CRIME BELOW -->
+        <div class="col-md-1 col-md-offset-1">
+          <div style="display:inline-block;">
+            <button id="report" class="btn btn-primary" data-toggle="modal" data-target="#myModal">REPORT</button>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
+
 </nav>
+
+<!--  -->
+<!-- Modal -->
+<div class="modal-body">
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">REPORT INCIDENT</h4>
+        </div>
+
+        <!-- report incident form -->
+        <div class="row search-wrapper">
+          <div class="col-xs-8 col-xs-offset-2 mobile-search">
+              <div class="form-group">
+                  
+                 <br> 
+                  <div class="col-xs-10 col-xs-offset-2 mobile-search input-group">
+                      <input type="hidden" name="type" value="name" id="search_type">
+                      <span class="input-group-btn"></span>
+                      <input type="text" class="form-control index-search " name="term2" id="report_place" placeholder="Enter Place..." value="">
+                      
+                      
+                  </div>
+                  <br> 
+                  <div class="col-xs-10 col-xs-offset-2 mobile-search input-group">
+                      <input type="hidden" name="type" value="name" id="search_type">
+                      <span class="input-group-btn"></span>
+                      <input type="text" class="form-control index-search " name="term2" id="incident" placeholder="Enter Incident..." value="">
+                      
+                      
+                  </div>
+                  <div class="radio">
+                    <input type="checkbox" id="usemyloc" name="usemyloc" ><label>USE MY LOCATION</label>
+                  </div>
+                  <div>
+                    <span class="input-group-btn"> 
+
+                        <button class="btn btn-danger" onclick="report()" type="submit">
+                            <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Report
+                        </button>
+                    </span>
+                  </div>
+              </div>
+          </div>
+      </div>
+        <!--  -->
+
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!--  -->
+<script type="text/javascript">
+
+
+
+  $("button").click(function(){
+  $.post("/report",
+  {
+    name: "Donald Duck",
+    city: "Duckburg"
+  },
+  function(data, status){
+    alert("Data: " + data + "\nStatus: " + status);
+  })
+
+
+  function report(){
+    var report_place = document.getElementById('report_place').value;
+    var incident = document.getElementById('incident').value;
+    var usemyloc = $('#usemyloc').is(":checked");
+    if (usemyloc)
+    {
+      if (navigator.geolocation) {
+        report_place=navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        window.alert("Geolocation is not supported by this browser.");
+      }
+    }
+    $.post("/report",
+    {
+      loc: report_place,
+      incident: incident
+    },
+    function(data,status){
+      alert("Data: " + data + "\nStatus: " + status);
+    });
+  }
+</script>
