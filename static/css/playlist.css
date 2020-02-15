@@ -1,0 +1,100 @@
+.playlist-video-container {
+    border:1px solid black;
+    padding :9px;
+    
+}
+.placeholder-class-for-playlist {
+    border: 2px dashed black;
+    background-color: #e2e2e2;
+  }
+  
+  .hover-class-for-playlist{
+    background-color : bisque;
+  }
+
+ul.sortable>li {
+    margin-top :5px;
+    margin-bottom: 5px;
+}
+
+
+.clear-float {
+    clear:both;
+}
+
+.row.playlist-row{
+    margin:0;
+}
+.row.playlist-row>.col-md-8{
+    background-color: #f8f8f8;
+    padding-top:17px;
+}
+.playlist-sorting-options{
+    padding-left:46px;
+}
+
+.playlist-meta-info{
+    background-color: #eee;
+    padding:20px;
+    margin-top:23px;
+}
+.playlist-meta-info .some-info{
+    font-size:large;
+}
+
+.sortable{
+    list-style-type: none;
+}
+.video-thumbnail {
+    padding: 0;
+}
+
+.video-thumbnail img{
+    width:92%;
+}
+.time {
+    position : absolute ;
+    top :84% ;
+    left :8%;
+    display: block;
+}
+
+.clck {
+    position : absolute;
+    bottom:1%;
+    left:2%;
+    display :block;
+    z-index: 9;
+}
+
+.playlist-video-info{
+
+}
+.title.title-info {
+    text-decoration: none;
+    color:#525254;
+}
+.title.title-info h3{
+    margin:0;
+    padding: 7px;
+}
+
+.author a{
+    text-decoration: none;
+    font-size: small;
+    font-weight: 400;
+    padding: 7px;
+}
+
+.delete-option-button {
+    display: none;
+    position: absolute;
+    cursor: pointer;
+    top:0;
+    right:0;
+    font-size: 2em;
+}
+
+.playlist-video-container:hover .delete-option-button{
+    display: block;
+}
