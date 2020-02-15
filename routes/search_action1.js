@@ -250,10 +250,82 @@ routePointsType[2] = new Array("police", "restaurant");
 // })
 
 
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI / 180)
+}
+async function getmanualScore(src, dest, crimespots) {
+    // crimespots will be a 2d array
+    return new Promise(async (resolve, reject) => {
+        let arr = [];
+        try {
+            let res = await tmp(src, dest);
+            //console.log(res)
+
+            for (r in res) {
+                let sc = 0;
+
+                //console.log(r);
+                route = res[r];
+                for (var i = 0; i < crimespots.length; i++) {
+                    let mindis = 100000000;
+                    let clat = crimespots[i][0];
+                    let clong = crimespots[i][1];
+                    for (l in route) {
+                        leg = route[l];
+                        let lat = leg[0];
+                        let long = leg[1];
+                        let dis = getDistanceFromLatLonInKm(clat, clong, lat, long);
+                        dis = dis * 1000;
+                        // console.log(dis);
+                        // console.log('9999999999');
+                        mindis = Math.min(dis, mindis);
+
+                    }
+                    // console.log(mindis);
+                    sc = sc + 1 / mindis;
+
+                }
+
+                arr.push(-sc * 1000);
+                console.log(-sc * 1000);
+                
+
+            }
+            resolve(arr);
+        }
+        catch (err) {
+            reject(err);
+            // console.log(err);
+        }
+    })
+}
+
 router.get('/', async (req, res, next) => {
 
     try {
-        console.log(req.query);
+        let allReport = await dbReport.find();
+        let coord = [];
+        for (i in allReport) {
+            let tmp = [];
+            tmp.push(allReport[i].lat);
+            tmp.push(allReport[i].lgt);
+            coord.push(tmp);
+        }
+
         let src = req.query.src;
         let dest = req.query.dest;
         let safety = req.query.safety;
@@ -261,6 +333,7 @@ router.get('/', async (req, res, next) => {
         if(!src || !dest || src.length <3 || dest.length < 3){
              res.redirect('/index');
         }
+        let score1 = await getmanualScore(src,dest,coord);
         let finMap;
         if(entertainment != 'true'){
             finMap = myMap;
@@ -286,7 +359,9 @@ router.get('/', async (req, res, next) => {
                     }
                     result.push(score);
                 }
-                console.log(result)
+                for(i in result){
+                    result[i] += score1[i];
+                }
                 // res.render('home3.ejs',{ user: req.user, coord : true ,result1 : [],src : '25.491899,81.865059', dest : '25.491899,81.865059'});
                 res.render('home3.ejs',{ user: null, coord : false ,result1 : result,src : src, dest : dest,safety : safety});
             })
