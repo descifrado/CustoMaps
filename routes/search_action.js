@@ -8,7 +8,7 @@ var https = require('https')
 function getPoints(src, des) {
     return new Promise((resolve, reject) => {
         request({
-            'url': 'https://maps.googleapis.com/maps/api/directions/json?origin=' + src + '&destination=' + des + '&key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&alternatives=true&travelMode=DRIVING',
+            'url': 'https://maps.googleapis.com/maps/api/directions/json?origin=' + src + '&destination=' + des + '&key=AIzaSyAGJuiMIFfz2EqhwuWBXtBSdFbILXAl-M0&alternatives=true&travelMode=DRIVING',
             'method': "GET",
             'proxy': 'http://edcguest:edcguest@172.31.100.14:3128'
         }, function (error, response, body) {
@@ -26,7 +26,7 @@ function getPoints(src, des) {
 function getPlacesFromServer(lat, lng, rad) {
     return new Promise((resolve, reject) => {
         request({
-            'url': 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + lat + ',' + lng + '&radius=' + rad + '&key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg',
+            'url': 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + lat + ',' + lng + '&radius=' + rad + '&key=AIzaSyAGJuiMIFfz2EqhwuWBXtBSdFbILXAl-M0',
             'method': "GET",
             'proxy': 'http://edcguest:edcguest@172.31.100.14:3128'
         }, function (error, response, body) {
