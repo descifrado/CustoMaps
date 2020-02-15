@@ -1,5 +1,8 @@
 <h1 align ="center">CustoMAPS</h1>
 
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://forthebadge.com)
+
 A tool to analyse alternative paths between two location on GOOGLE MAPS to get the customized result which will be based on user requirements
 
 
