@@ -28,6 +28,12 @@ Then we have used Places API to get the near by places on each route.
 We have calculated score of each route based on the static points alloted to each type of place.
 
   
-  
- 
+## Challenges Faced
+1. Major Challenge was to get all the places on a particular route...
+After going through a lot of Google Map API functions we are able to achieve our goals
+
+2. Another challenge was to check if the point reported by the user lie on the route or not because there was no direct
+
+## Limitations
+Due to a lot of challenges and time limitations we were not able to work on the complexity of API calls...
   

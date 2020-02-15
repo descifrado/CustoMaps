@@ -8,7 +8,7 @@ var https = require('https')
 function getPoints(src, des) {
     return new Promise((resolve, reject) => {
         request({
-            'url': 'https://maps.googleapis.com/maps/api/directions/json?origin=' + src + '&destination=' + des + '&key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&alternatives=true',
+            'url': 'https://maps.googleapis.com/maps/api/directions/json?origin=' + src + '&destination=' + des + '&key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&alternatives=true&travelMode=DRIVING',
             'method': "GET",
             'proxy': 'http://edcguest:edcguest@172.31.100.14:3128'
         }, function (error, response, body) {
@@ -257,19 +257,21 @@ router.get('/', async (req, res, next) => {
         console.log(req.query);
         let src = req.query.src;
         let dest = req.query.dest;
-        let safety = req.params.safety;
-        let entertainment = req.params.entertainment;
-        
+        let safety = req.query.safety;
+        let entertainment = req.query.entertainment;
+        console.log("csdcsdc");
+        console.log(dest);
         if(!src || !dest || src.length <3 || dest.length < 3){
              res.redirect('/index');
         }
         // res.send(req.query);
         let finMap;
-        
-        if(!entertainment){
+        if(entertainment != 'true'){
             finMap = myMap;
+            safety = 'true';
         }else{
-            finMap = myMap1; 
+            finMap = myMap1;
+            safety = 'false';
         }
 
         let arr = getAllPlaces(src, dest);
@@ -289,7 +291,7 @@ router.get('/', async (req, res, next) => {
                     result.push(score);
                 }
                 console.log(result)
-                res.render('index.ejs',{ user: req.user, coord : false ,result1 : result,src : src, dest : dest});
+                res.render('index.ejs',{ user: req.user, coord : false ,result1 : result,src : src, dest : dest,safety : safety});
             })
             .catch((err) =>{
                 console.log(err);
