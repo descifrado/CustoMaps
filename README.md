@@ -1,4 +1,4 @@
-<h1 align ="center">CustoMaps</h1>
+<h1 align ="center">CustoMAPS</h1>
 
 A tool to analyse alternative paths between two location on GOOGLE MAPS to get the customized result which will be based on user requirements
 
