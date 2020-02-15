@@ -8,11 +8,13 @@ const home = require('../routes/home'),
    index = require('../routes/index'),
    profile = require('../routes/profile'),
    search_action = require('../routes/search_action'),
-   search_action1 = require('../routes/search_action1')
- 
+   search_action1 = require('../routes/search_action1'),
+   report = require('../routes/report')
+   
    
 
 module.exports = function (app) {
+   app.use('/report',report);
    app.use('/search_action1',search_action1);
    app.use('/search_action',search_action);
    app.use('/profile',profile);
