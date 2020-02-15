@@ -1,0 +1,6 @@
+{
+    "name":"My Application overrideing default",
+    "mail": {
+        "host": "dev_mail_server"
+    }
+}

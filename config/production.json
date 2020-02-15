@@ -1,0 +1,6 @@
+{
+    "name":"My appliction deployedt",
+    "mail": {
+        "host": "prod_mail_server"
+    }
+}
