@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <% include partials/head1.ejs %> <!-- This will include and link all the required js and css files -->
+    <link rel="stylesheet" href="/static/css/searchPage.css" >
+<!-- //fonts -->
+</head>
+  <body>
+
+    <% include partials/navbar1.ejs %>
+    <% include partials/sidebar.ejs %>
+    <div class="col-md-9 col-md-offset-2" style="padding:72px;">
+        <hgroup class="mb20">
+            <h1>Search Results</h1>
+            <h2 class="lead"><strong class="text-danger"><%= list.length %> </strong> results were found for the search <strong class="text-danger">"<%= searchText %>"</strong></h2>								
+        </hgroup>
+         
+        <section class="">
+            <% include partials/videoPalette.ejs %>
+        </section>
+        <% include partials/addToPlaylistModal %>
+    </div>
+
+    
+  
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/mainscript.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script>
+       $(document).ready(function () {
+        $('.extra-options-search-button').click(function (ele) {
+            $(this).next().toggle(100);
+        });
+      });
+    </script>
+  </body>
+  
+</html>
