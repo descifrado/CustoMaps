@@ -18,6 +18,12 @@ Customised results of our app will give the most entertaining route for the gang
 Going on drive with family, no one wants to face accidents...
 Certain crossings and spots are there which are very much prone to accidents but Google Maps don't care about them
 Using our tool one can make sure that even though a little more time will be needed but one can reach the destination safely
+
+## Working
+We have used Google Maps APIs such as Directions API for getting all the routes between two locations.
+Then we have used Places API to get the near by places on each route.
+We have calculated score of each route based on the static points alloted to each type of place.
+
   
   
  
