@@ -184,8 +184,74 @@ async function getAllPlaces(src, dest) {
         }
     })
 }
-let arr = getAllPlaces("MNNIT Allahabad Campus, Teliarganj, Prayagraj, Uttar Pradesh", "Black Out Restaurant, Barrister Mullah Colony, Teliarganj, Prayagraj, Uttar Pradesh 211002")
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = deg2rad(lon2-lon1); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+      ; 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d;
+  }
+  
+  function deg2rad(deg) {
+    return deg * (Math.PI/180)
+}
+async function getmanualScore(src, dest,crimespots) {
+    // crimespots will be a 2d array
+    return new Promise(async (resolve, reject) => {
+        let arr = [];
+        try {
+            let res = await tmp(src, dest);
+            //console.log(res)
 
+            for (r in res) {
+                let sc = 0;
+                
+                //console.log(r);
+                route = res[r];
+                for(var i=0;i<crimespots.length;i++){
+                    let mindis = 100000000;
+                    let clat = crimespots[i][0];
+                    let clong = crimespots[i][1];
+                    for (l in route) {
+                        leg = route[l];
+                        let lat = leg[0];
+                        let long = leg[1];
+                        let dis = getDistanceFromLatLonInKm(clat,clong,lat,long);
+                        dis = dis*1000;
+                        // console.log(dis);
+                        // console.log('9999999999');
+                        mindis = Math.min(dis,mindis);
+                        
+                    }
+                    // console.log(mindis);
+                    sc = sc + 1/mindis;
+                    
+                 }
+
+                 arr.push(-sc*1000);
+                 console.log(-sc*1000);
+                 console.log('KKKKKKKKKKKKKKK');
+                
+            }
+            resolve(arr);
+        }
+        catch (err) {
+            reject(err);
+            // console.log(err);
+        }
+    })
+}
+
+let arr = getAllPlaces("MNNIT Allahabad Campus, Teliarganj, Prayagraj, Uttar Pradesh", "Black Out Restaurant, Barrister Mullah Colony, Teliarganj, Prayagraj, Uttar Pradesh 211002")
+let crimetmp = [['25.478936', '81.862480'],['25.478936', '81.862480']];
+getmanualScore("MNNIT Allahabad Campus, Teliarganj, Prayagraj, Uttar Pradesh", "Black Out Restaurant, Barrister Mullah Colony, Teliarganj, Prayagraj, Uttar Pradesh 211002",crimetmp);
+// getmanualScore will return an array containing score corresponding to each route , just provide a crimespot array (calculated from database of reported crimes)
 
 let myMap = new Map();
 myMap.set("bank", 50);
