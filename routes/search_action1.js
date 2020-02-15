@@ -8,7 +8,7 @@ var https = require('https')
 function getPoints(src, des) {
     return new Promise((resolve, reject) => {
         request({
-            'url': 'https://maps.googleapis.com/maps/api/directions/json?origin=' + src + '&destination=' + des + '&key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&alternatives=true&travelMode=WALKING',
+            'url': 'https://maps.googleapis.com/maps/api/directions/json?origin=' + src + '&destination=' + des + '&key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&alternatives=true&travelMode=DRIVING',
             'method': "GET",
             'proxy': 'http://edcguest:edcguest@172.31.100.14:3128'
         }, function (error, response, body) {

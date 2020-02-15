@@ -8,7 +8,7 @@ var https = require('https')
 function getPoints(src, des) {
     return new Promise((resolve, reject) => {
         request({
-            'url': 'https://maps.googleapis.com/maps/api/directions/json?origin=' + src + '&destination=' + des + '&key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&alternatives=true',
+            'url': 'https://maps.googleapis.com/maps/api/directions/json?origin=' + src + '&destination=' + des + '&key=AIzaSyDypqxioUk_qw86oohlmAxtxRKTU-DLcNg&alternatives=true&travelMode=DRIVING',
             'method': "GET",
             'proxy': 'http://edcguest:edcguest@172.31.100.14:3128'
         }, function (error, response, body) {
@@ -259,7 +259,8 @@ router.get('/', async (req, res, next) => {
         let dest = req.query.dest;
         let safety = req.query.safety;
         let entertainment = req.query.entertainment;
-        
+        console.log("csdcsdc");
+        console.log(dest);
         if(!src || !dest || src.length <3 || dest.length < 3){
              res.redirect('/index');
         }

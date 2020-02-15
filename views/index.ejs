@@ -52,13 +52,14 @@
 				directionsService.route({
 					origin: "<%= src %>",
 					destination: "<%= dest %>",
-					travelMode: 'WALKING',
+					travelMode: 'DRIVING',
 					provideRouteAlternatives: true
 				}, function (result, status) {
 					console.log(<%= result1 %>);
 					var arr = [];
 					
 					<% result1.forEach(element => { %>
+						console.log("<%= element %>")
 						arr.push(<%= element %>)
 						<% }); %>
 					var max = -10000000, idx = -1;
