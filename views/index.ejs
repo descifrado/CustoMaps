@@ -81,15 +81,26 @@
 						directionsRenderer.setDirections(result);
 					}
 					if (idx != -1) {
-						var directionsRenderer = new google.maps.DirectionsRenderer({
-							polylineOptions: {
-								strokeColor: "blue"
-							}
-						});
-						directionsRenderer.setMap(map);
-						directionsRenderer.setRouteIndex(idx);
-						directionsRenderer.setDirections(result);
-					}
+                        let safety = '<%= safety %>';
+                        var directionsRenderer;
+                        if (safety == 'true') {
+                            directionsRenderer = new google.maps.DirectionsRenderer({
+                                polylineOptions: {
+                                    strokeColor: "blue"
+                                }
+                            });
+                        }else{
+                            directionsRenderer = new google.maps.DirectionsRenderer({
+                                polylineOptions: {
+                                    strokeColor: "green"
+                                }
+                            });
+                        }
+
+                        directionsRenderer.setMap(map);
+                        directionsRenderer.setRouteIndex(idx);
+                        directionsRenderer.setDirections(result);
+                    }
 				});
 
 

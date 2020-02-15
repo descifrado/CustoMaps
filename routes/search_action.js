@@ -257,19 +257,20 @@ router.get('/', async (req, res, next) => {
         console.log(req.query);
         let src = req.query.src;
         let dest = req.query.dest;
-        let safety = req.params.safety;
-        let entertainment = req.params.entertainment;
+        let safety = req.query.safety;
+        let entertainment = req.query.entertainment;
         
         if(!src || !dest || src.length <3 || dest.length < 3){
              res.redirect('/index');
         }
         // res.send(req.query);
         let finMap;
-        
-        if(!entertainment){
+        if(entertainment != 'true'){
             finMap = myMap;
+            safety = 'true';
         }else{
-            finMap = myMap1; 
+            finMap = myMap1;
+            safety = 'false';
         }
 
         let arr = getAllPlaces(src, dest);
@@ -289,7 +290,7 @@ router.get('/', async (req, res, next) => {
                     result.push(score);
                 }
                 console.log(result)
-                res.render('index.ejs',{ user: req.user, coord : false ,result1 : result,src : src, dest : dest});
+                res.render('index.ejs',{ user: req.user, coord : false ,result1 : result,src : src, dest : dest,safety : safety});
             })
             .catch((err) =>{
                 console.log(err);
