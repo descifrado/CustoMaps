@@ -19,6 +19,7 @@ function getPoints(src, des) {
         })
     })
 }
+// hi
 
 function getPlacesFromServer(lat, lng, rad) {
     return new Promise((resolve, reject) => {
