@@ -30,7 +30,15 @@ We have used Google Maps APIs such as Directions API for getting all the routes 
 Then we have used Places API to get the near by places on each route.
 We have calculated score of each route based on the static points alloted to each type of place.
 
-  
+## Demo
+<p align="center">
+<img src="Screenshot%20(105).png"/>
+ </p>
+ 
+ <p align="center">
+<img src="Screenshot%20(106).png"/>
+ </p>
+
 ## Challenges Faced
 1. Major Challenge was to get all the places on a particular route...
 After going through a lot of Google Map API functions we are able to achieve our goals
